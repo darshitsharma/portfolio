@@ -1,0 +1,459 @@
+@import '@fontsource/plus-jakarta-sans/latin-400.css';
+@import '@fontsource/plus-jakarta-sans/latin-500.css';
+@import '@fontsource/plus-jakarta-sans/latin-600.css';
+@import '@fontsource/plus-jakarta-sans/latin-700.css';
+@import '@fontsource/plus-jakarta-sans/latin-800.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+
+#root :is(.hero-description,
+    .section-heading p,
+    .impact-card p,
+    .project-content > p,
+    .tags > span,
+    .experience-toggle p,
+    .experience-details li,
+    .skill-pills > span,
+    .education-block p,
+    .achievement-block p,
+    .contact-layout > div > p,
+    .project-dialog p:not(.dialog-description),
+    .dialog-description,
+    .architecture-list) {
+    color: #5f6f85;
+    font-size: 15px;
+}
+
+#root :is(.section-kicker,
+    .section-kicker > span:first-child,
+    .metric-label,
+    .hero-footnote,
+    .hero-bottom,
+    .hero-bottom > span,
+    .avatar-coordinate,
+    .avatar-status,
+    .project-category,
+    .project-number,
+    .project-metrics small,
+    .projects-note,
+    .section-side-label,
+    .timeline-date,
+    .current-label,
+    .skill-number,
+    .eyebrow,
+    .education-meta,
+    .cgpa > span,
+    .contact-links small,
+    .site-footer > span,
+    .footer-note,
+    .project-dialog .source-note,
+    .brand-name > span) {
+    color: #65748a;
+}
+
+#root .muted-heading {
+    color: #778293;
+}
+
+#root .project-filters button {
+    color: #53637a;
+    font-size: 13px;
+    min-height: 44px;
+    padding: 10px 8px;
+    border: 1px solid transparent;
+}
+
+#root .project-filters button.selected {
+    color: #fff;
+    background: #244b73;
+    border-color: #244b73;
+}
+
+#root .project-filters button:not(.selected):hover {
+    background: #e1e9f3;
+    color: #243d5b;
+}
+
+#root :is(.voice-query > span,
+    .spark-cluster > span,
+    .experience-company) {
+    color: #53637a;
+}
+
+#root .text-link {
+    color: #4d6fa3;
+    font-size: 14px;
+}
+
+#root .avatar-canvas {
+    pointer-events: none;
+}
+
+#root :is(.project-content > p, .experience-details li) {
+    font-size: 15px;
+    line-height: 1.85;
+}
+
+#root .skill-pills>span {
+    font-size: 13px;
+}
+
+#root .tags>span {
+    font-size: 12px;
+}
+
+#root .project-metrics small {
+    font-size: 12px;
+}
+
+#root .section-heading p {
+    font-size: 15px;
+}
+
+#root .contact-links strong {
+    font-size: 15px;
+    overflow-wrap: anywhere;
+}
+
+#root :is(.desktop-nav > a, .mobile-menu > a, .resume-button, .hero-buttons > a, .hero-buttons > button) {
+    font-size: 14px;
+}
+
+#root :is(.experience-company, .timeline-date, .document-label > span, .education-meta, .contact-links small, .site-footer > span) {
+    font-size: 12px;
+}
+
+#root :is(.section-kicker, .eyebrow, .current-label, .section-side-label, .project-category, .skill-number, .hero-footnote, .hero-bottom, .hero-bottom > span) {
+    font-size: 11px;
+}
+
+#root :is(.experience-documents h4, .document-label strong, .document-footer p, .skill-heading h3) {
+    font-size: 14px;
+}
+
+#root .experience-toggle h3 {
+    font-size: 22px;
+}
+
+#root .experience-toggle>div {
+    min-width: 0;
+    flex: 1;
+}
+
+#root .chevron {
+    width: 36px;
+    height: 36px;
+    padding: 7px;
+    margin-top: 0;
+    flex-shrink: 0;
+    border: 1px solid #8296af;
+    border-radius: 6px;
+    background: #eef3f9;
+    color: #304d73;
+}
+
+#root .chevron.expanded {
+    background: #244b73;
+    border-color: #244b73;
+    color: #fff;
+}
+
+#root :is(.icon-button, .project-arrow, .back-top) {
+    width: 44px;
+    height: 44px;
+    border-color: #8296af;
+    background: #fff;
+    color: #304d73;
+}
+
+#root .icon-button:hover,
+#root .project-card:hover .project-arrow,
+#root .back-top:hover {
+    background: #eaf1fb;
+    border-color: #45658b;
+}
+
+#root .avatar-status {
+    font-size: 12px;
+    max-width: calc(100% - 100px);
+}
+
+#root .hero-description {
+    font-size: 16px;
+}
+
+#root .project-dialog .source-note {
+    color: #65748a !important;
+}
+
+@media (max-width: 700px) {
+    #root .hero {
+        padding-top: 32px;
+    }
+
+    #root .hero::before {
+        inset: -74px 0 0;
+    }
+
+    #root .hero h1 {
+        font-size: 56px;
+        margin: 16px 0;
+    }
+
+    #root .hero-roles {
+        font-size: 12px;
+    }
+
+    #root .hero-description {
+        font-size: 15px;
+        line-height: 1.8;
+        margin-top: 14px;
+    }
+
+    #root .hero-buttons {
+        margin-top: 20px;
+    }
+
+    #root .hero-footnote {
+        margin-top: 18px;
+    }
+
+    #root .avatar-stage {
+        height: 250px;
+        min-height: 250px;
+        margin-top: 0;
+    }
+
+    #root .avatar-canvas {
+        inset: -3px 8px 0;
+    }
+
+    #root .avatar-coordinate {
+        top: 3px;
+        font-size: 5px;
+    }
+
+    #root .orbit-outer {
+        width: 230px;
+        height: 230px;
+        top: 44%;
+    }
+
+    #root .orbit-inner {
+        width: 175px;
+        height: 175px;
+        top: 44%;
+    }
+
+    #root .tag-vertex {
+        top: 34px;
+        left: 8%;
+    }
+
+    #root .tag-langgraph {
+        top: 73px;
+        right: 4%;
+    }
+
+    #root .tag-pyspark {
+        bottom: 48px;
+        left: 4%;
+    }
+
+    #root .tag-fastapi {
+        bottom: 54px;
+        right: 5%;
+    }
+
+    #root .avatar-status {
+        bottom: -4px;
+        left: 0;
+        transform: none;
+        font-size: 11px;
+        line-height: 1.7;
+        padding: 6px 10px;
+    }
+
+    #root .avatar-pause {
+        bottom: 0;
+        right: 8%;
+    }
+
+    #root .avatar-ground {
+        bottom: 25px;
+        width: 95px;
+        height: 10px;
+    }
+
+    #root .cross-one {
+        top: 26px;
+        right: 20%;
+    }
+
+    #root .cross-two {
+        bottom: 42px;
+        left: 18%;
+    }
+
+    #root .hero-bottom {
+        margin-top: 15px;
+        padding-block: 17px;
+    }
+
+    #root .project-content>p {
+        font-size: 15px;
+    }
+
+    #root .experience-details li {
+        font-size: 15px;
+    }
+
+    #root .section-heading p {
+        font-size: 15px;
+    }
+
+    #root .contact-links strong {
+        font-size: 14px;
+    }
+
+    #root .skill-pills>span {
+        font-size: 13px;
+    }
+}
+
+:root {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 16px;
+    color: #172131;
+    background: #fff;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    --ink: #172131;
+    --muted: #687487;
+    --blue: #2563eb;
+    --green: #10b981;
+    --line: #e9edf2;
+    --mono: 'JetBrains Mono', monospace;
+    --shadow: 0 2px 3px #17213103, 0 8px 20px #17213104, 0 20px 44px #17213104;
+    color-scheme: light;
+}
+
+* {
+    box-sizing: border-box;
+    letter-spacing: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 115px;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+}
+
+button,
+input,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button,
+a {
+    touch-action: manipulation;
+}
+
+button {
+    cursor: pointer;
+}
+
+button {
+    color: inherit;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid #739df6;
+    outline-offset: 5px;
+}
+
+button {
+    border: 0;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0;
+}
+
+button svg,
+a svg {
+    flex-shrink: 0;
+}
+
+::selection {
+    background: #dce8ff;
+    color: #1744a8;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link {
+    position: fixed;
+    top: -60px;
+    left: 20px;
+    padding: 12px 18px;
+    background: var(--blue);
+    color: #fff;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

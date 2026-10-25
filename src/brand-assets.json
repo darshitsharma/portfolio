@@ -1,0 +1,179 @@
+{
+    "company": {
+        "source": "https://www.linkedin.com/company/mahindragroup/",
+        "asset": "https://media.licdn.com/dms/image/v2/D4D0BAQGQCdkOp2uW-g/company-logo_200_200/company-logo_200_200/0/1664681376096/mahindragroup_logo?e=2147483647&v=beta&t=avsS_sj6oI0ugQi0G7ei0ti6ZTtn5TUBVjjZ_f4Tq5I",
+        "file": "logos/mahindra-linkedin.jpg"
+    },
+    "skills": {
+        "AWS": {
+            "file": "logos/aws.png",
+            "source": "https://aws.amazon.com/",
+            "asset": "https://a0.awsstatic.com/libra-css/images/site/touch-icon-iphone-114-smile.png"
+        },
+        "Celery": {
+            "file": "logos/celery.ico",
+            "source": "https://docs.celeryq.dev/",
+            "asset": "https://docs.celeryq.dev/en/stable/_static/favicon.ico"
+        },
+        "CrewAI": {
+            "file": "logos/crewai.ico",
+            "source": "https://www.crewai.com/",
+            "asset": "https://crewai.com/favicon.ico?favicon.9df2505d.ico"
+        },
+        "Docker": {
+            "file": "logos/docker.png",
+            "source": "https://www.docker.com/",
+            "asset": "https://www.docker.com/app/uploads/2024/02/cropped-docker-logo-favicon-180x180.png"
+        },
+        "FastAPI": {
+            "file": "logos/fastapi.png",
+            "source": "https://fastapi.tiangolo.com/",
+            "asset": "https://fastapi.tiangolo.com/img/favicon.png"
+        },
+        "FastMCP": {
+            "file": "logos/fastmcp.png",
+            "source": "https://gofastmcp.com/",
+            "asset": "https://gofastmcp.com/mintlify-assets/_mintlify/favicons/fastmcp/1KQviU8vsE4vEF8n/_generated/favicon/apple-touch-icon.png"
+        },
+        "Git": {
+            "file": "logos/git.ico",
+            "source": "https://git-scm.com/",
+            "asset": "https://git-scm.com/favicon.ico"
+        },
+        "Google Cloud": {
+            "file": "logos/google-cloud.png",
+            "source": "https://cloud.google.com/",
+            "asset": "https://www.gstatic.com/cgc/super_cloud_gradient.png"
+        },
+        "gRPC": {
+            "file": "logos/grpc.png",
+            "source": "https://grpc.io/",
+            "asset": "https://grpc.io/favicons/apple-touch-icon.png"
+        },
+        "JAX": {
+            "file": "logos/jax.png",
+            "source": "https://docs.jax.dev/",
+            "asset": "https://docs.jax.dev/en/latest/_static/favicon.png"
+        },
+        "Jenkins": {
+            "file": "logos/jenkins.svg",
+            "source": "https://www.jenkins.io/",
+            "asset": "https://www.jenkins.io/safari-pinned-tab.svg"
+        },
+        "Kubernetes": {
+            "file": "logos/kubernetes.png",
+            "source": "https://kubernetes.io/",
+            "asset": "https://kubernetes.io/images/kubernetes.png"
+        },
+        "LangChain": {
+            "file": "logos/langchain.png",
+            "source": "https://www.langchain.com/",
+            "asset": "https://cdn.prod.website-files.com/65b8cd72835ceeacd4449a53/69a17e4f0c916c644f4de1cd_webclip%20lg.png"
+        },
+        "Matplotlib": {
+            "file": "logos/matplotlib.ico",
+            "source": "https://matplotlib.org/",
+            "asset": "https://matplotlib.org/_static/favicon.ico"
+        },
+        "MCP": {
+            "file": "logos/mcp.png",
+            "source": "https://modelcontextprotocol.io/",
+            "asset": "https://modelcontextprotocol.io/mintlify-assets/_mintlify/favicons/mcp/ebiVJzri-bsiCfVZ/_generated/favicon/apple-touch-icon.png"
+        },
+        "MLflow": {
+            "file": "logos/mlflow.ico",
+            "source": "https://mlflow.org/",
+            "asset": "https://mlflow.org/img/mlflow-favicon.ico"
+        },
+        "MongoDB": {
+            "file": "logos/mongodb.ico",
+            "source": "https://www.mongodb.com/",
+            "asset": "https://www.mongodb.com/assets/images/global/favicon.ico"
+        },
+        "NumPy": {
+            "file": "logos/numpy.ico",
+            "source": "https://numpy.org/",
+            "asset": "https://numpy.org/images/favicon.ico"
+        },
+        "Ollama": {
+            "file": "logos/ollama.png",
+            "source": "https://ollama.com/",
+            "asset": "https://ollama.com/public/apple-touch-icon.png"
+        },
+        "OpenAI": {
+            "file": "logos/openai.svg",
+            "source": "https://openai.com/",
+            "asset": "https://openai.com/favicon.svg"
+        },
+        "Pandas": {
+            "file": "logos/pandas.ico",
+            "source": "https://pandas.pydata.org/",
+            "asset": "https://pandas.pydata.org/static/img/favicon.ico"
+        },
+        "Pinecone": {
+            "file": "logos/pinecone.ico",
+            "source": "https://www.pinecone.io/",
+            "asset": "https://www.pinecone.io/favicon.ico?favicon.16aah0kd0o17q.ico"
+        },
+        "Plotly": {
+            "file": "logos/plotly.ico",
+            "source": "https://plotly.com/",
+            "asset": "https://plotly.com/favicon.ico"
+        },
+        "Polars": {
+            "file": "logos/polars.svg",
+            "source": "https://pola.rs/",
+            "asset": "https://pola.rs/favicon.svg"
+        },
+        "PostgreSQL": {
+            "file": "logos/postgresql.ico",
+            "source": "https://www.postgresql.org/",
+            "asset": "https://www.postgresql.org/favicon.ico"
+        },
+        "PySpark": {
+            "file": "logos/pyspark.ico",
+            "source": "https://spark.apache.org/",
+            "asset": "https://spark.apache.org/favicon.ico"
+        },
+        "Python": {
+            "file": "logos/python.png",
+            "source": "https://www.python.org/",
+            "asset": "https://www.python.org/static/apple-touch-icon-precomposed.png"
+        },
+        "PyTorch": {
+            "file": "logos/pytorch.webp",
+            "source": "https://pytorch.org/",
+            "asset": "https://pytorch.org/wp-content/uploads/2024/10/cropped-favicon-180x180.webp"
+        },
+        "Redis": {
+            "file": "logos/redis.png",
+            "source": "https://redis.io/",
+            "asset": "https://redis.io/apple-icon.png?apple-icon.0oi7qb05iiq_i.png"
+        },
+        "Scikit-Learn": {
+            "file": "logos/scikit-learn.svg",
+            "source": "https://scikit-learn.org/stable/",
+            "asset": "https://scikit-learn.org/stable/_static/scikit-learn-logo-without-subtitle.svg"
+        },
+        "SciPy": {
+            "file": "logos/scipy.ico",
+            "source": "https://scipy.org/",
+            "asset": "https://scipy.org/images/favicon.ico"
+        },
+        "Seaborn": {
+            "file": "logos/seaborn.ico",
+            "source": "https://seaborn.pydata.org/",
+            "asset": "https://seaborn.pydata.org/_static/favicon.ico"
+        },
+        "TensorFlow": {
+            "file": "logos/tensorflow.png",
+            "source": "https://www.tensorflow.org/",
+            "asset": "https://www.gstatic.com/devrel-devsite/prod/v9ce9cb5b22b62a465ff52c45061a0a6a2d86a80b685e9aa8a182b203fdfbf420/tensorflow/images/apple-touch-icon-180x180.png"
+        },
+        "XGBoost": {
+            "file": "logos/xgboost.png",
+            "source": "https://xgboost.ai/",
+            "asset": "https://xgboost.ai/images/logo/xgboost-logo.png"
+        }
+    }
+}
