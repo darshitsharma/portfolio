@@ -69,7 +69,12 @@ describe('portfolio content integrity', () => {
     })
 
     it('bundles byte-identical original documents and real PDF previews', () => {
-        expect(provenance).toHaveLength(6)
+        expect(provenance).toHaveLength(7)
+        const resume = readFileSync(new URL('../public/documents/Darshit_Sharma_3_years.pdf', import.meta.url))
+        expect(resume.subarray(0, 5).toString()).toBe('%PDF-')
+        expect(createHash('sha256').update(resume).digest('hex')).toBe(
+            provenance.find((entry) => entry.file === 'documents/Darshit_Sharma_3_years.pdf')?.sha256,
+        )
         for (const document of experience.flatMap((item) => item.documents)) {
             const file = readFileSync(new URL(`../public/${document.file}`, import.meta.url))
             expect(createHash('sha256').update(file).digest('hex')).toBe(
@@ -105,7 +110,7 @@ describe('portfolio content integrity', () => {
             await mkdir(join(directory, 'documents'))
             await cp('public/documents', join(directory, 'documents'), { recursive: true })
             await writeFile(join(directory, 'index.html'), '<meta http-equiv="Content-Security-Policy" content="default-src &#39;none&#39;">')
-            expect(verify().toString()).toContain('6 original document hashes')
+            expect(verify().toString()).toContain('7 original document hashes')
             await writeFile(join(directory, '.env'), 'NOT_A_REAL_SECRET=test-fixture')
             expect(verify).toThrow()
             await rm(join(directory, '.env'))

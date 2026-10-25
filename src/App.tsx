@@ -432,8 +432,6 @@ function App() {
     const [selectedProject, setSelectedProject] = useState<Project | null>(null)
     const [selectedDocument, setSelectedDocument] = useState<ExperienceDocument | null>(null)
     const [expandedExperience, setExpandedExperience] = useState<number[]>([0])
-    const [pdfBusy, setPdfBusy] = useState(false)
-    const [pdfError, setPdfError] = useState('')
     const [activeSection, setActiveSection] = useState('about')
     const reduceMotion = useReducedMotion()
 
@@ -459,19 +457,6 @@ function App() {
         })
         return () => observer.disconnect()
     }, [])
-
-    async function downloadResume() {
-        setPdfBusy(true)
-        setPdfError('')
-        try {
-            const { downloadResumePdf } = await import('./resume')
-            downloadResumePdf()
-        } catch {
-            setPdfError('The PDF could not be generated. Please try again.')
-        } finally {
-            setPdfBusy(false)
-        }
-    }
 
     const visibleProjects = projects.filter(
         (project) =>
@@ -508,14 +493,14 @@ function App() {
                     ))}
                 </nav>
                 <div className="nav-actions">
-                    <button
+                    <a
                         className="resume-button"
-                        onClick={downloadResume}
-                        disabled={pdfBusy}
+                        href={assetPath('documents/Darshit_Sharma_3_years.pdf')}
+                        download="Darshit_Sharma_3_years.pdf"
                     >
                         <ArrowDownToLine size={15} />
-                        <span>{pdfBusy ? 'Preparing...' : 'Resume PDF'}</span>
-                    </button>
+                        <span>Resume PDF</span>
+                    </a>
                     <button
                         className="icon-button mobile-menu-button"
                         aria-expanded={menuOpen}
@@ -546,18 +531,6 @@ function App() {
                     )}
                 </AnimatePresence>
             </header>
-            {pdfError && (
-                <div className="error-toast" role="alert">
-                    {pdfError}
-                    <button
-                        className="icon-button"
-                        onClick={() => setPdfError('')}
-                        aria-label="Dismiss error"
-                    >
-                        <X size={16} />
-                    </button>
-                </div>
-            )}
             <main id="main">
                 <section id="about" className="hero section-width">
                     <Reveal className="hero-copy">
@@ -621,25 +594,27 @@ function App() {
                             </Suspense>
                         </div>
                         <div className="floating-tag tag-vertex">
-                            <span className="tag-logo cloud-logo">
-                                <Layers3 size={17} />
+                            <span className="tag-logo">
+                                <img src={assetPath(skillLogos['PyTorch'].file)} width={17} height={17} alt="" />
                             </span>
-                            Vertex AI
+                            PyTorch
                             <span className="tag-online" />
                         </div>
                         <div className="floating-tag tag-langgraph">
-                            <Workflow size={17} />
-                            LangGraph
+                            <span className="tag-logo">
+                                <img src={assetPath(skillLogos['LangChain'].file)} width={17} height={17} alt="" />
+                            </span>
+                            LangChain
                         </div>
                         <div className="floating-tag tag-pyspark">
                             <Zap size={17} className="spark-icon" />
                             PySpark
                         </div>
                         <div className="floating-tag tag-fastapi">
-                            <span className="fastapi-logo">
-                                <Zap size={12} fill="currentColor" />
+                            <span className="tag-logo cloud-logo">
+                                <img src={assetPath(skillLogos['Google Cloud'].file)} width={17} height={17} alt="" />
                             </span>
-                            FastAPI
+                            Google Cloud
                         </div>
                         <div className="avatar-ground" />
                         <div className="avatar-status">

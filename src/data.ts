@@ -318,6 +318,9 @@ export const skillGroups = [
             'Polars',
             'JAX',
             'cuDF',
+            'Plotly',
+            'Seaborn',
+            'Git',
         ],
     },
     {
@@ -361,7 +364,7 @@ export const skillGroups = [
         ],
     },
     {
-        title: 'Cloud, MLOps & big data',
+        title: 'Cloud, MLOps & Big data',
         number: '04',
         skills: [
             'Google Cloud',
@@ -375,9 +378,6 @@ export const skillGroups = [
             'Kubernetes',
             'CI/CD',
             'Jenkins',
-            'Git',
-            'Plotly',
-            'Seaborn',
             'Matplotlib',
         ],
     },

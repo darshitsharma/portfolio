@@ -31,7 +31,7 @@ GitHub Pages does not let this repository configure arbitrary HTTP response head
 
 A public resume or certificate can always be downloaded, copied, screenshotted, or edited elsewhere. Disabling right-click, hiding links, or adding PDF editing passwords does not provide reliable protection. Local browser/DevTools edits affect only that visitor's copy, not your published site.
 
-The resume download currently generates a PDF in the visitor's browser from the published portfolio data. It is not cryptographically signed. To let recipients verify an independently shared resume, publish an original PDF digitally signed using a trusted certificate and keep its signing key offline. A signature makes changes detectable in compatible PDF readers; it does not prevent someone from making an altered copy. This project does not invent a signing identity or store a signing key.
+The resume download serves the user-supplied original PDF unchanged. Its SHA-256 hash is checked before deployment; this integrity check is not a digital signature. The app does not add a signature or assert that the supplied PDF is signed. To let recipients verify an independently shared resume, publish an original PDF digitally signed using a trusted certificate and keep its signing key offline. A signature makes changes detectable in compatible PDF readers; it does not prevent someone from making an altered copy. This project does not invent a signing identity or store a signing key.
 
 ## Reporting
 

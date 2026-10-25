@@ -20,6 +20,10 @@ test('renders the portfolio with no horizontal overflow', async ({ page }) => {
         ),
     ).toBe(true)
     await expect(page.locator('.impact-card').first()).toContainText('172+')
+    await expect(page.locator('.avatar-stage .floating-tag')).toHaveText(['PyTorch', 'LangChain', 'PySpark', 'Google Cloud'])
+    const robotLogos = page.locator('.avatar-stage .floating-tag img')
+    await expect(robotLogos).toHaveCount(3)
+    await expect.poll(() => robotLogos.evaluateAll(images => images.every(image => (image as HTMLImageElement).naturalWidth > 0))).toBe(true)
 })
 
 test('highlights applied R&D and production GenAI with readable impact text', async ({ page }) => {
@@ -246,25 +250,19 @@ test('does not expose chatbot controls or open a chat shortcut', async ({ page }
     await expect(page.getByRole('dialog')).toHaveCount(0)
 })
 
-test('downloads a valid generated resume PDF', async ({ page }) => {
+test('downloads the unchanged original resume PDF', async ({ page, baseURL }) => {
+    const resumeLink = page.getByRole('link', { name: 'Resume PDF', exact: true })
+    await expect(resumeLink).toHaveAttribute('href', new URL('documents/Darshit_Sharma_3_years.pdf', baseURL).pathname)
     const downloading = page.waitForEvent('download')
-    await page.getByRole('button', { name: 'Resume PDF' }).click()
+    await resumeLink.click()
     const download = await downloading
-    expect(download.suggestedFilename()).toBe('Darshit_Sharma_Resume.pdf')
+    expect(download.suggestedFilename()).toBe('Darshit_Sharma_3_years.pdf')
     const path = await download.path()
     expect(path).not.toBeNull()
     const buffer = await readFile(path!)
     expect(buffer.subarray(0, 5).toString()).toBe('%PDF-')
-    expect(buffer.toString()).toContain('Darshit Sharma')
-    expect(buffer.toString()).toContain('JECRC')
-    expect(buffer.toString()).toContain('Toptal network member since 22 Oct 2026')
-    expect(buffer.toString()).toContain(profile.toptal)
-    expect(buffer.toString()).not.toContain('CredScope-AI')
-    expect(buffer.toString()).not.toContain('6377597572')
-    for (const project of personalProjects) {
-        expect(buffer.toString()).toContain(project.title)
-        expect(buffer.toString()).toContain(project.repository)
-    }
+    const original = await readFile(new URL('../public/documents/Darshit_Sharma_3_years.pdf', import.meta.url))
+    expect(buffer.equals(original)).toBe(true)
     expect(buffer.length).toBeGreaterThan(10000)
 })
 
@@ -306,7 +304,7 @@ test('production policy blocks inline scripts without breaking portfolio feature
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
     await expect(page.locator('canvas')).toBeVisible()
     const downloading = page.waitForEvent('download')
-    await page.getByRole('button', { name: 'Resume PDF' }).click()
+    await page.getByRole('link', { name: 'Resume PDF', exact: true }).click()
     const download = await downloading
     expect((await readFile((await download.path())!)).subarray(0, 5).toString()).toBe('%PDF-')
     expect(violations).toEqual([])

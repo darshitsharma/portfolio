@@ -27,14 +27,14 @@ The browser suite covers desktop and mobile layouts, filters, case-study and doc
 
 ## Content and behavior
 
-- `src/data.ts` is the shared resume source for projects, experience, skills, and PDF content. Update dates and metrics there as the resume changes.
+- `src/data.ts` is the shared portfolio source for projects, experience, and skills. The downloadable resume is a separate, user-supplied PDF.
 - The four professional case studies explain architecture, engineering rationale, and evaluation scope using the supplied resume. Personal projects are separate: AgentFlow and AMEX were checked against their public GitHub READMEs and core implementation files on 25 Oct 2026. Source URLs and evidence notes live in `src/data.ts`; no personal-project production outcomes or unverified benchmark rankings are claimed.
-- Toptal network membership and the public profile URL were checked on 25 Oct 2026. The profile lists membership since 22 Oct 2026. The hero, contact section, and generated resume link to the canonical public profile without its preview query parameter.
+- Toptal network membership and the public profile URL were checked on 25 Oct 2026. The profile lists membership since 22 Oct 2026. The hero and contact section link to the canonical public profile without its preview query parameter.
 - The INR 172+ Cr headline combines INR 152 Cr of business impact with INR 20 Cr in one-time savings. INR 30 lakh per-cycle savings are reported separately.
 - `src/Avatar.tsx` contains a custom Three.js companion. It follows the cursor, reacts to hero buttons, can be paused, respects reduced-motion preferences, and has a CSS fallback for unavailable WebGL. Replace the `Robot` model to use a future personal 3D asset.
 - Native case-study dialogs provide focus containment and Escape support.
-- Resume PDF generates a new, paginated PDF from the supplied text using jsPDF. It does not download the original resume PDF, which was not available as a workspace file. To use the original, add it to `public/` and replace the download handler with a download link.
-- The generated PDF includes the selected personal projects and clickable GitHub/Toptal links. The attached original resume is not rewritten or digitally signed.
+- Resume PDF downloads the original `public/documents/Darshit_Sharma_3_years.pdf` unchanged, using a base-path-aware download link for GitHub Pages.
+- Resume content is not regenerated from portfolio data or digitally signed by this app. Replacing the resume also requires updating its SHA-256 entry in `public/documents/provenance.json`.
 - Case-study diagrams are illustrative, not live dashboards or proprietary project data.
 - Contact links open email, telephone, and LinkedIn destinations. No contact messages are collected by the website.
 
