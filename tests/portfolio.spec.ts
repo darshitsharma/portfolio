@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 import { readFile } from 'node:fs/promises'
-import { experience } from '../src/data'
+import { experience, personalProjects, profile } from '../src/data'
 
 test.beforeEach(async ({ page }) => {
     await page.goto('./')
@@ -41,9 +41,67 @@ test('filters projects and opens each case study', async ({ page }) => {
         await expect(
             page.getByRole('heading', { name: 'Under the hood' }),
         ).toBeVisible()
+        await expect(page.getByRole('heading', { name: 'Engineering decisions', exact: true })).toBeVisible()
+        await expect(page.locator('.project-decisions dt')).toHaveCount(2)
+        await expect(page.getByRole('heading', { name: 'Evaluation & scope', exact: true })).toBeVisible()
         await page.keyboard.press('Escape')
         await expect(page.getByRole('dialog')).toHaveCount(0)
         await expect(button).toBeFocused()
+    }
+})
+
+test('shows evidenced personal projects separately from professional case studies', async ({ page }) => {
+    const companyTab = page.getByRole('tab', { name: 'Company projects', exact: true })
+    const personalTab = page.getByRole('tab', { name: 'Personal projects', exact: true })
+    await expect(companyTab).toHaveAttribute('aria-selected', 'true')
+    await expect(page.locator('.project-tile-header').filter({ hasText: 'Company project' })).toHaveCount(4)
+    await expect(page.locator('.personal-project')).toHaveCount(0)
+    await page.getByRole('button', { name: 'GenAI & Agents', exact: true }).click()
+    await personalTab.click()
+    await expect(personalTab).toHaveAttribute('aria-selected', 'true')
+    await expect(page.getByRole('tabpanel', { name: 'Company projects', exact: true })).toBeHidden()
+    await expect(page.getByRole('heading', { name: 'Personal projects', exact: true })).toBeVisible()
+    await expect(page.locator('.personal-project')).toHaveCount(3)
+    await expect(page.locator('.personal-project.project-card')).toHaveCount(3)
+    await expect(page.locator('.project-tile-header').filter({ hasText: 'Personal project' })).toHaveCount(3)
+    for (const project of personalProjects) {
+        const entry = page.getByRole('article', { name: project.title, exact: true })
+        await expect(entry).toContainText(project.description)
+        await expect(entry.locator('li')).toHaveCount(2)
+        const source = entry.getByRole('link', { name: `View ${project.title} on GitHub`, exact: true })
+        await expect(source).toHaveAttribute('href', project.repository)
+        await expect(source).toHaveAttribute('target', '_blank')
+        await expect(source).toHaveAttribute('rel', 'noopener noreferrer')
+    }
+    await expect(page.locator('#credscope-ai-title').locator('..')).toContainText('synthetic dataset')
+    await expect(page.locator('#amex-title').locator('..')).toContainText('not classification accuracy')
+    await personalTab.focus()
+    await page.keyboard.press('ArrowLeft')
+    await expect(companyTab).toBeFocused()
+    await expect(companyTab).toHaveAttribute('aria-selected', 'true')
+    await expect(page.locator('.project-card')).toHaveCount(2)
+    await expect(page.locator('.personal-project')).toHaveCount(0)
+    await page.keyboard.press('End')
+    await expect(personalTab).toBeFocused()
+    await expect(page.locator('.personal-project')).toHaveCount(3)
+    await page.keyboard.press('Home')
+    await expect(companyTab).toBeFocused()
+})
+
+test('links verified Toptal membership and contains new content at phone widths', async ({ page }) => {
+    const membership = page.getByRole('link', { name: 'Toptal network member', exact: true })
+    await expect(membership).toHaveAttribute('href', profile.toptal)
+    await expect(membership).toHaveAttribute('title', /22 Oct 2026/)
+    await expect(membership).toHaveAttribute('rel', 'noopener noreferrer')
+    await expect(page.locator('.contact-links').getByRole('link', { name: /TOPTAL NETWORK/ })).toHaveAttribute('href', profile.toptal)
+    await page.getByRole('tab', { name: 'Personal projects', exact: true }).click()
+    for (const width of [320, 390, 768, 1440]) {
+        await page.setViewportSize({ width, height: 900 })
+        await page.evaluate(() => new Promise(requestAnimationFrame))
+        await page.evaluate(() => document.fonts.ready)
+        const overflow = await page.locator('.personal-project h3,.personal-project p,.personal-project li,.network-link,.personal-work-heading,.project-tabs button,.project-tile-header').evaluateAll(elements => elements.filter(element => element.scrollWidth > element.clientWidth + 1).map(element => element.textContent))
+        expect(overflow).toEqual([])
+        await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     }
 })
 
@@ -131,7 +189,7 @@ test('keeps document lists and previews contained at narrow widths', async ({ pa
         await preview.click()
         const dialog = page.getByRole('dialog')
         expect(await dialog.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true)
-        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+        await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
         const image = await dialog.locator('.document-image').boundingBox()
         expect(image!.width).toBeLessThan(width)
         expect(await dialog.locator('.document-image').evaluate(element => getComputedStyle(element).objectFit)).toBe('contain')
@@ -173,6 +231,12 @@ test('downloads a valid generated resume PDF', async ({ page }) => {
     expect(buffer.subarray(0, 5).toString()).toBe('%PDF-')
     expect(buffer.toString()).toContain('Darshit Sharma')
     expect(buffer.toString()).toContain('JECRC')
+    expect(buffer.toString()).toContain('Toptal network member since 22 Oct 2026')
+    expect(buffer.toString()).toContain(profile.toptal)
+    for (const project of personalProjects) {
+        expect(buffer.toString()).toContain(project.title)
+        expect(buffer.toString()).toContain(project.repository)
+    }
     expect(buffer.length).toBeGreaterThan(10000)
 })
 
@@ -344,12 +408,11 @@ test('supports mobile navigation and narrow layouts', async ({
             () => document.documentElement.scrollWidth <= innerWidth,
         ),
     ).toBe(true)
-    const overflowing = await page
+    await expect.poll(() => page
         .locator('h1,h2,h3,.button,.impact-value,.skill-pills>span')
         .evaluateAll((elements) =>
             elements
                 .filter((element) => element.scrollWidth > element.clientWidth + 1)
                 .map((element) => element.textContent),
-        )
-    expect(overflowing).toEqual([])
+        )).toEqual([])
 })

@@ -13,7 +13,9 @@ import {
     ArrowUpRight,
     AudioLines,
     Award,
+    BadgeCheck,
     Braces,
+    BriefcaseBusiness,
     Check,
     ChevronDown,
     Cpu,
@@ -32,7 +34,7 @@ import {
     Zap,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { education, experience, profile, projects, skillGroups } from './data'
+import { education, experience, personalProjects, profile, projects, skillGroups } from './data'
 import type { ExperienceDocument, Project } from './data'
 import brandAssets from './brand-assets.json'
 import './App.css'
@@ -41,6 +43,10 @@ const Avatar = lazy(() => import('./Avatar'))
 const skillLogos: Record<string, { file: string }> = brandAssets.skills
 const assetPath = (file: string) => `${import.meta.env.BASE_URL}${file}`
 const currentYear = new Date().getFullYear()
+const projectTabs = [
+    { id: 'company', label: 'Company projects', icon: BriefcaseBusiness },
+    { id: 'personal', label: 'Personal projects', icon: Braces },
+] as const
 const navigation = [
     ['About', 'about'],
     ['Impact', 'impact'],
@@ -328,6 +334,17 @@ function ProjectDialog({
                             <li key={step}>{step}</li>
                         ))}
                     </ol>
+                    <h3>Engineering decisions</h3>
+                    <dl className="project-decisions">
+                        {project.engineering.map((decision) => (
+                            <div key={decision.title}>
+                                <dt>{decision.title}</dt>
+                                <dd>{decision.detail}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                    <h3>Evaluation & scope</h3>
+                    <p>{project.evaluation}</p>
                     <h3>The outcome</h3>
                     <p>{project.outcome}</p>
                     <div className="tags">
@@ -412,6 +429,7 @@ function App() {
     const [avatarExcited, setAvatarExcited] = useState(false)
     const [avatarPaused, setAvatarPaused] = useState(false)
     const [filter, setFilter] = useState('All work')
+    const [projectTab, setProjectTab] = useState<'company' | 'personal'>('company')
     const [selectedProject, setSelectedProject] = useState<Project | null>(null)
     const [selectedDocument, setSelectedDocument] = useState<ExperienceDocument | null>(null)
     const [expandedExperience, setExpandedExperience] = useState<number[]>([0])
@@ -556,6 +574,17 @@ function App() {
                             Data Scientist <span>/</span> ML Engineer <span>/</span> AI
                             Engineer
                         </p>
+                        <a
+                            className="network-link"
+                            href={profile.toptal}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title={`Verified Expert in Engineering. Member since ${profile.toptalMemberSince}.`}
+                        >
+                            <BadgeCheck size={18} aria-hidden="true" />
+                            Toptal network member
+                            <ArrowUpRight size={15} aria-hidden="true" />
+                        </a>
                         <p className="hero-description">
                             From complex data to real-world impact.
                             <br className="desktop-break" /> I build production-grade AI,
@@ -748,69 +777,144 @@ function App() {
                                 </h2>
                                 <p>A few things I’ve built. And the difference they made.</p>
                             </div>
-                            <div
-                                className="project-filters"
-                                role="group"
-                                aria-label="Filter projects"
-                            >
-                                {['All work', 'GenAI & Agents', 'ML & Data'].map((item) => (
-                                    <button
-                                        key={item}
-                                        className={filter === item ? 'selected' : ''}
-                                        aria-pressed={filter === item}
-                                        onClick={() => setFilter(item)}
-                                    >
-                                        {item}
-                                    </button>
-                                ))}
-                            </div>
                         </div>
                     </Reveal>
-                    <div className="project-grid" aria-live="polite">
-                        {visibleProjects.map((project, index) => (
-                            <Reveal key={project.id} delay={(index % 2) * 0.06}>
-                                <article className={`project-card project-${project.visual}`}>
-                                    <button
-                                        className="project-open"
-                                        onClick={() => setSelectedProject(project)}
-                                        aria-label={`Read case study: ${project.title}`}
-                                    >
-                                        <ProjectVisual type={project.visual} />
-                                        <div className="project-content">
-                                            <div className="project-category">
-                                                <span>{project.category}</span>
-                                                <span className="project-number">
-                                                    /{project.number}
-                                                </span>
-                                            </div>
-                                            <h3>{project.title}</h3>
-                                            <p>{project.description}</p>
-                                            <div className="tags">
-                                                {project.tags.map((tag) => (
-                                                    <span key={tag}>{tag}</span>
-                                                ))}
-                                            </div>
-                                            <div className="project-metrics">
-                                                {project.metrics.map((metric) => (
-                                                    <div key={metric.label}>
-                                                        <strong>{metric.value}</strong>
-                                                        <small>{metric.label}</small>
-                                                    </div>
-                                                ))}
-                                                <span className="project-arrow">
-                                                    <ArrowUpRight size={21} />
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </button>
-                                </article>
-                            </Reveal>
-                        ))}
+                    <div className="project-toolbar">
+                        <div
+                            className="project-tabs"
+                            role="tablist"
+                            aria-label="Project ownership"
+                            onKeyDown={(event) => {
+                                if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+                                event.preventDefault()
+                                const currentIndex = projectTabs.findIndex((tab) => tab.id === projectTab)
+                                const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? projectTabs.length - 1 : (currentIndex + (event.key === 'ArrowRight' ? 1 : -1) + projectTabs.length) % projectTabs.length
+                                setProjectTab(projectTabs[nextIndex].id)
+                                event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]')[nextIndex]?.focus()
+                            }}
+                        >
+                            {projectTabs.map(({ id, label, icon: Icon }) => (
+                                <button
+                                    key={id}
+                                    id={`projects-${id}-tab`}
+                                    role="tab"
+                                    aria-selected={projectTab === id}
+                                    aria-controls={`projects-${id}-panel`}
+                                    tabIndex={projectTab === id ? 0 : -1}
+                                    onClick={() => setProjectTab(id)}
+                                >
+                                    <Icon size={16} aria-hidden="true" /> {label}
+                                </button>
+                            ))}
+                        </div>
+                        {projectTab === 'company' && <div
+                            className="project-filters"
+                            role="group"
+                            aria-label="Filter professional projects"
+                        >
+                            {['All work', 'GenAI & Agents', 'ML & Data'].map((item) => (
+                                <button
+                                    key={item}
+                                    className={filter === item ? 'selected' : ''}
+                                    aria-pressed={filter === item}
+                                    onClick={() => setFilter(item)}
+                                >
+                                    {item}
+                                </button>
+                            ))}
+                        </div>}
                     </div>
-                    <p className="projects-note">
-                        <span className="status-dot" /> Enterprise work, real outcomes.
-                        Architecture summaries shared without proprietary data.
-                    </p>
+                    <div id="projects-company-panel" role="tabpanel" aria-labelledby="projects-company-tab" hidden={projectTab !== 'company'} tabIndex={0}>
+                        {projectTab === 'company' && <>
+                            <div className="project-grid" aria-live="polite">
+                                {visibleProjects.map((project, index) => (
+                                    <Reveal key={project.id} delay={(index % 2) * 0.06}>
+                                        <article className={`project-card project-${project.visual}`}>
+                                            <button
+                                                className="project-open"
+                                                onClick={() => setSelectedProject(project)}
+                                                aria-label={`Read case study: ${project.title}`}
+                                            >
+                                                <div className="project-tile-header">
+                                                    <span><BriefcaseBusiness size={14} aria-hidden="true" /> Company project</span>
+                                                    <span>/{project.number}</span>
+                                                </div>
+                                                <ProjectVisual type={project.visual} />
+                                                <div className="project-content">
+                                                    <div className="project-category">
+                                                        <span>{project.category}</span>
+                                                    </div>
+                                                    <h3>{project.title}</h3>
+                                                    <p>{project.description}</p>
+                                                    <div className="tags">
+                                                        {project.tags.map((tag) => (
+                                                            <span key={tag}>{tag}</span>
+                                                        ))}
+                                                    </div>
+                                                    <div className="project-metrics">
+                                                        {project.metrics.map((metric) => (
+                                                            <div key={metric.label}>
+                                                                <strong>{metric.value}</strong>
+                                                                <small>{metric.label}</small>
+                                                            </div>
+                                                        ))}
+                                                        <span className="project-arrow">
+                                                            <ArrowUpRight size={21} />
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </article>
+                                    </Reveal>
+                                ))}
+                            </div>
+                            <p className="projects-note">
+                                <span className="status-dot" /> Enterprise work, real outcomes.
+                                Architecture summaries shared without proprietary data.
+                            </p>
+                        </>}
+                    </div>
+                    <div id="projects-personal-panel" role="tabpanel" aria-labelledby="projects-personal-tab" hidden={projectTab !== 'personal'} tabIndex={0}>
+                        {projectTab === 'personal' && <div className="personal-work" aria-labelledby="personal-projects-title">
+                            <Reveal>
+                                <div className="personal-work-heading">
+                                    <div>
+                                        <span className="eyebrow">INDEPENDENT BUILDS & EXPERIMENTS</span>
+                                        <h3 id="personal-projects-title">Personal projects</h3>
+                                    </div>
+                                    <a className="text-link" href={profile.github} target="_blank" rel="noopener noreferrer">
+                                        GitHub profile <ArrowUpRight size={16} />
+                                    </a>
+                                </div>
+                            </Reveal>
+                            <div className="project-grid">
+                                {personalProjects.map((project) => (
+                                    <Reveal key={project.id}>
+                                        <article className="project-card personal-project" aria-labelledby={`${project.id}-title`}>
+                                            <div className="project-tile-header">
+                                                <span><Braces size={14} aria-hidden="true" /> Personal project</span>
+                                                {project.id === 'agentflow' ? <Workflow size={18} aria-hidden="true" /> : project.id === 'credscope-ai' ? <Database size={18} aria-hidden="true" /> : <Cpu size={18} aria-hidden="true" />}
+                                            </div>
+                                            <div className="project-content personal-project-content">
+                                                <span className="personal-project-category">{project.category}</span>
+                                                <h3 id={`${project.id}-title`}>{project.title}</h3>
+                                                <p>{project.description}</p>
+                                                <ul>
+                                                    {project.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}
+                                                </ul>
+                                                <div className="tags">
+                                                    {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                                                </div>
+                                                <a className="text-link personal-project-source" href={project.repository} target="_blank" rel="noopener noreferrer" aria-label={`View ${project.title} on GitHub`}>
+                                                    Source code <ArrowUpRight size={16} />
+                                                </a>
+                                            </div>
+                                        </article>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>}
+                    </div>
                 </section>
 
                 <section id="experience" className="experience-section">
@@ -1090,6 +1194,22 @@ function App() {
                                             <strong>{profile.phone}</strong>
                                         </span>
                                         <ArrowUpRight size={18} />
+                                    </a>
+                                    <a href={profile.toptal} target="_blank" rel="noopener noreferrer">
+                                        <span className="contact-link-icon"><BadgeCheck size={19} /></span>
+                                        <span>
+                                            <small>TOPTAL NETWORK</small>
+                                            <strong>Verified Expert in Engineering</strong>
+                                        </span>
+                                        <ExternalLink size={16} />
+                                    </a>
+                                    <a href={profile.github} target="_blank" rel="noopener noreferrer">
+                                        <span className="contact-link-icon"><Braces size={19} /></span>
+                                        <span>
+                                            <small>CODE & PERSONAL PROJECTS</small>
+                                            <strong>github.com/darshitsharma</strong>
+                                        </span>
+                                        <ExternalLink size={16} />
                                     </a>
                                 </div>
                             </div>

@@ -4,6 +4,9 @@ export const profile = {
     email: 'darsu2000sharma@gmail.com',
     phone: '+91-6377597572',
     linkedin: 'https://www.linkedin.com/in/darshit-sharma',
+    github: 'https://github.com/darshitsharma',
+    toptal: 'https://www.toptal.com/developers/resume/darshit-sharma',
+    toptalMemberSince: '22 Oct 2026',
 }
 
 export type Project = {
@@ -16,6 +19,8 @@ export type Project = {
     metrics: { value: string; label: string }[]
     problem: string
     architecture: string[]
+    engineering: { title: string; detail: string }[]
+    evaluation: string
     outcome: string
     visual: 'twin' | 'voice' | 'data' | 'agents'
 }
@@ -34,12 +39,18 @@ export const projects: Project[] = [
             { value: '<50ms', label: 'API response' },
         ],
         problem:
-            'Physical Wheel Force Transducers make vehicle testing expensive. A multi-output regression model using Temporal Convolutional Networks and XGBoost predicts forces and moments directly from vehicle sensor data.',
+            'Wheel-end forces and moments are important inputs to vehicle validation, but collecting them with physical Wheel Force Transducers adds equipment cost and testing overhead. The goal was to estimate these signals from vehicle sensor data and reduce dependence on dedicated transducer hardware without losing sight of prediction quality.',
         architecture: [
-            'Vehicle sensor data feeds TCN and XGBoost models, achieving less than 0.05 NRMSE across all wheels.',
-            'FastAPI and Celery decouple heavy inference from API requests, with MLflow tracking and autonomous data drift detection.',
-            'Google Cloud Vertex AI dynamically spins up containers for 50 concurrent batch jobs, each producing 50,000+ predictions within 15 minutes.',
+            'Developed multi-output regression using Temporal Convolutional Networks and XGBoost to map vehicle sensor inputs to wheel-end force and moment targets across all wheels.',
+            'Implemented a FastAPI service with Celery workers so computationally heavy inference runs outside the synchronous request path instead of holding an API connection open.',
+            'Integrated MLflow and autonomous data-drift detection into the end-to-end pipeline to track model work and monitor changes in the data used by the system.',
+            'Deployed automated batch inference on Google Cloud Vertex AI, dynamically starting containers for up to 50 concurrent jobs and 50,000+ predictions per job within a 15-minute window.',
         ],
+        engineering: [
+            { title: 'Model quality and system latency are separate concerns', detail: 'The regression task is evaluated on normalized error, while the API is designed around responsiveness. Moving heavy work to Celery lets a fast request interface coexist with much larger inference workloads.' },
+            { title: 'A model is only one part of the product', detail: 'Serving, batch orchestration, experiment tracking, and drift monitoring connect the predictive model to an engineering workflow that can be operated beyond a notebook.' },
+        ],
+        evaluation: 'Reported prediction error is below 0.05 NRMSE across all wheels. The sub-50ms figure describes API response time, not completion of an entire batch inference job; the batch volume and execution window are reported separately.',
         outcome:
             'INR 20 Cr in one-time savings, INR 30 lakh saved per project cycle, and 60% faster vehicle validation cycles.',
         visual: 'twin',
@@ -57,12 +68,18 @@ export const projects: Project[] = [
             { value: '80%', label: 'productivity gain' },
         ],
         problem:
-            'Engineers need fast access to engine testing knowledge. A FastAPI and PostgreSQL platform combines database management with natural-language voice queries.',
+            'Engine testing knowledge is useful only when engineers can locate the relevant information quickly. This project combined a database management platform with a voice-enabled retrieval workflow, allowing spoken questions to reach the underlying testing knowledge rather than requiring users to navigate it manually.',
         architecture: [
-            'OpenAI Whisper transcribes audio queries with 94% speech-to-text accuracy.',
-            'LangChain orchestrates a RAG pipeline with pgvector for retrieval.',
-            'RAG Fusion generates query variations; Reciprocal Rank Fusion re-ranks hybrid search results.',
+            'Built the engine-testing data platform around FastAPI and PostgreSQL, connecting database management with the natural-language retrieval workflow.',
+            'Used OpenAI Whisper to convert spoken questions into text, with reported speech-to-text accuracy of 94%. LangChain then orchestrates the retrieval-augmented generation pipeline.',
+            'Implemented retrieval with pgvector and hybrid search. RAG Fusion generates several variations of a question so that retrieval is not limited to one wording.',
+            'Applied Reciprocal Rank Fusion to combine the ranked search results before passing retrieved context through the RAG workflow.',
         ],
+        engineering: [
+            { title: 'Voice is an entry point, not a separate search system', detail: 'Transcribing the question first lets spoken input reuse the same retrieval workflow as text. Speech recognition and knowledge retrieval remain separately measurable stages.' },
+            { title: 'Fuse rankings across query variations', detail: 'Different formulations can surface different relevant records. Reciprocal Rank Fusion combines their ranked results without treating raw scores from different searches as directly comparable.' },
+        ],
+        evaluation: 'The resume reports 94% speech-to-text accuracy, above 96.8% Top-K retrieval accuracy, and an 80% productivity improvement. Retrieval accuracy measures finding relevant context; it is not a claim that every generated answer is correct.',
         outcome:
             'Above 96.8% Top-K retrieval accuracy and an 80% improvement in engineer productivity.',
         visual: 'voice',
@@ -80,12 +97,18 @@ export const projects: Project[] = [
             { value: '1,100', label: 'concurrent requests' },
         ],
         problem:
-            'Large-scale vehicle test analysis and historical data retrieval were time-intensive. An end-to-end analytics platform automates analysis and surfaces relevant historical tables and graphs.',
+            'Vehicle test analysis combines large datasets, long-running computation, and the need to find comparable historical tests. The platform brings these tasks together: automate the analysis, retrieve relevant tables and graphs, and keep the request interface usable while substantial processing continues in the background.',
         architecture: [
-            'Apache Spark (PySpark) on Google Cloud Dataproc processes vehicle test data at scale.',
-            'A structured pgvector RAG system matches complex vehicle test parameters with 92.8% Top-K retrieval accuracy.',
-            'An asynchronous Celery and Redis request manager orchestrates long-running analytics jobs without REST API timeouts.',
+            'Programmed an end-to-end vehicle-test analytics platform using Apache Spark through PySpark on Google Cloud Dataproc to automate large-scale analysis.',
+            'Created a structured RAG workflow with pgvector to match complex vehicle-test parameters against historical data and surface relevant tables and graphs.',
+            'Built an asynchronous request manager with Celery and Redis to orchestrate analytics work outside the REST request lifecycle.',
+            'Supported parallel execution of up to 1,100 requests while eliminating REST API timeouts from the long-running analytics workflow.',
         ],
+        engineering: [
+            { title: 'Separate distributed computation from request handling', detail: 'Spark addresses the scale of the analysis; Celery and Redis address the lifecycle of requests waiting for that work. These are complementary responsibilities rather than interchangeable scaling tools.' },
+            { title: 'Retrieve engineering artifacts, not just prose', detail: 'Matching structured test parameters makes historical tables and graphs discoverable in context, connecting retrieval to the artifacts engineers actually use for comparison and analysis.' },
+        ],
+        evaluation: 'Reported results include 92.8% Top-K retrieval accuracy and a 95% improvement in engineer efficiency. The concurrency figure refers to analytics requests, not 1,100 Spark clusters. INR 152 Cr is reported product-development business impact, distinct from the digital twin project\'s one-time savings.',
         outcome:
             'INR 152 Cr in product development business impact, 95% improved engineer efficiency, and up to 1,100 parallel requests with zero REST API timeouts.',
         visual: 'data',
@@ -103,15 +126,74 @@ export const projects: Project[] = [
             { value: 'End-to-end', label: 'HR workflow' },
         ],
         problem:
-            'Architected a multi-agent AI system to automate multiple stages of HR workflows, from CV screening to final candidate ratings.',
+            'Recruitment involves several connected tasks rather than a single question-and-answer exchange. This hackathon project explored a multi-agent workflow that links CV screening, role-specific interview preparation, response analysis, and candidate ratings in one coordinated process.',
         architecture: [
-            'Screen and categorize CVs by role.',
-            'Generate role-specific interview questions.',
-            'Analyze candidate responses alongside facial expressions and produce candidate ratings.',
+            'Architected a multi-agent system to screen and categorize CVs according to the role being considered.',
+            'Generated role-specific interview questions to carry information from the screening stage into the interview workflow.',
+            'Combined analysis of candidate responses with a facial-expression analysis component described in the hackathon submission.',
+            'Produced candidate ratings as the final stage of the coordinated workflow, demonstrating the full sequence in a competition setting.',
         ],
+        engineering: [
+            { title: 'Organize the workflow around distinct responsibilities', detail: 'Screening, question generation, and response analysis have different inputs and outputs. A multi-agent design makes these stages explicit instead of collapsing the full workflow into one prompt.' },
+            { title: 'Keep prototype scope and hiring validity distinct', detail: 'A hackathon demonstration is not evidence of a validated hiring system. Facial expressions should not be treated as a reliable proxy for ability; consequential hiring decisions require human oversight and appropriate fairness and privacy review.' },
+        ],
+        evaluation: 'Winner of the Mahindra AI Hackathon in October 2024. No production hiring outcomes, predictive-validity results, or fairness benchmarks are claimed for this prototype.',
         outcome:
             'Winner of the Mahindra AI Hackathon in October 2024. This is a description of the supplied project, not an endorsement of facial-expression analysis as a hiring measure.',
         visual: 'agents',
+    },
+]
+
+export type PersonalProject = {
+    id: string
+    title: string
+    category: string
+    description: string
+    highlights: string[]
+    tags: string[]
+    repository: string
+    evidence: string
+}
+
+export const personalProjects: PersonalProject[] = [
+    {
+        id: 'agentflow',
+        title: 'AgentFlow',
+        category: 'Agent orchestration',
+        description: 'A full-stack workspace for configuring AI agents, connecting them in visual workflows, and inspecting their conversations, memory, and execution logs.',
+        highlights: [
+            'Pairs a React Flow editor with a FastAPI back end and local Ollama inference; agent execution uses LangGraph, with conditional workflow routing and fan-in handling.',
+            'Implements short-term semantic recall and persistent facts with ChromaDB, alongside PostgreSQL message history, Telegram integration, and a monitoring dashboard.',
+        ],
+        tags: ['FastAPI', 'React Flow', 'LangGraph', 'Ollama', 'ChromaDB'],
+        repository: 'https://github.com/darshitsharma/AgentFlow',
+        evidence: 'README and backend/app/workflow_engine.py reviewed on 25 Oct 2026. Personal project; no production-scale or commercial outcome claimed.',
+    },
+    {
+        id: 'credscope-ai',
+        title: 'CredScope-AI',
+        category: 'Financial ML prototype',
+        description: 'An MSME financial-health prototype connecting model training, a scoring API, and a dashboard for financial health, credit eligibility, and recommended credit limits.',
+        highlights: [
+            'Uses XGBoost regression and classification pipelines to model financial-health scores, credit eligibility, and recommended credit limits from the supplied synthetic dataset.',
+            'Connects a FastAPI scoring service to a Next.js dashboard for financial indicators and model explanations. Built as an assignment prototype, not a validated lending system.',
+        ],
+        tags: ['XGBoost', 'FastAPI', 'Next.js', 'Scikit-Learn'],
+        repository: 'https://github.com/darshitsharma/CredScope-AI',
+        evidence: 'README and ml_pipeline/train_models.py reviewed on 25 Oct 2026. Synthetic-data assignment; no real-world credit performance or deployment claimed.',
+    },
+    {
+        id: 'amex',
+        title: 'AMEX sequence modeling',
+        category: 'Kaggle research notebook',
+        description: 'A competition notebook exploring TensorFlow GRU sequence modeling and RAPIDS for the American Express prediction challenge on Kaggle.',
+        highlights: [
+            'Builds a TensorFlow GRU model and uses the competition-specific AMEX metric to evaluate predictions across validation folds.',
+            'Explores large-data processing in the Kaggle environment with RAPIDS. The repository reports a 0.787 competition-metric score, not classification accuracy or a verified leaderboard rank.',
+        ],
+        tags: ['TensorFlow', 'GRU', 'RAPIDS', 'Kaggle'],
+        repository: 'https://github.com/darshitsharma/AMEX',
+        evidence: 'README and amex-tensorflow-and-rapids.ipynb reviewed on 25 Oct 2026. Score is repository-reported; no independent rerun or leaderboard verification.',
     },
 ]
 

@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process'
 import { cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { experience, projects, skillGroups } from './data'
+import { experience, personalProjects, profile, projects, skillGroups } from './data'
 import brandAssets from './brand-assets.json'
 import provenance from '../public/documents/provenance.json'
 
@@ -16,6 +16,29 @@ describe('portfolio content integrity', () => {
         expect(experience).toHaveLength(3)
         expect(skillGroups).toHaveLength(4)
         expect(new Set(projects.map((project) => project.id)).size).toBe(4)
+    })
+
+    it('explains engineering decisions and evaluation scope for every case study', () => {
+        for (const project of projects) {
+            expect(project.architecture.length).toBeGreaterThanOrEqual(4)
+            expect(project.engineering).toHaveLength(2)
+            expect(project.evaluation.length).toBeGreaterThan(100)
+        }
+        expect(projects[0].evaluation).toContain('API response time')
+        expect(projects[1].evaluation).toContain('not a claim')
+    })
+
+    it('keeps evidenced personal projects separate from employer work', () => {
+        expect(personalProjects.map(project => project.id)).toEqual(['agentflow', 'credscope-ai', 'amex'])
+        for (const project of personalProjects) {
+            expect(project.repository).toMatch(/^https:\/\/github\.com\/darshitsharma\//)
+            expect(project.highlights).toHaveLength(2)
+            expect(project.evidence).toContain('25 Oct 2026')
+        }
+        expect(personalProjects[1].evidence).toContain('Synthetic-data')
+        expect(personalProjects[2].highlights.join(' ')).toContain('not classification accuracy')
+        expect(profile.toptal).toBe('https://www.toptal.com/developers/resume/darshit-sharma')
+        expect(profile.toptalMemberSince).toBe('22 Oct 2026')
     })
 
     it('attaches the four supplied awards only to the Mahindra role', () => {

@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf'
-import { education, experience, profile, projects, skillGroups } from './data'
+import { education, experience, personalProjects, profile, projects, skillGroups } from './data'
 
 export function downloadResumePdf() {
     const document = new jsPDF({ unit: 'mm', format: 'a4' })
@@ -37,10 +37,24 @@ export function downloadResumePdf() {
         document.line(18, cursor - 2, 192, cursor - 2)
         cursor += 3
     }
+    function link(label: string, url: string) {
+        if (cursor > 273) {
+            document.addPage()
+            cursor = 20
+        }
+        document.setFont('helvetica', 'normal')
+        document.setFontSize(9)
+        document.setTextColor(37, 99, 235)
+        document.textWithLink(label, 18, cursor, { url })
+        cursor += 7
+    }
     write(profile.name, 26, true, [15, 23, 42])
     write(profile.role, 10)
     write(`${profile.email}  |  ${profile.phone}`, 9)
     write('linkedin.com/in/darshit-sharma', 9)
+    write(`Toptal network member since ${profile.toptalMemberSince}`, 9)
+    link('Toptal profile: darshit-sharma', profile.toptal)
+    link('GitHub: github.com/darshitsharma', profile.github)
     section('Work experience')
     for (const item of experience) {
         write(`${item.role} - ${item.company}`, 12, true)
@@ -61,6 +75,15 @@ export function downloadResumePdf() {
         write(project.problem)
         for (const step of project.architecture) write(`- ${step}`)
         write(project.outcome, 10, true)
+        cursor += 3
+    }
+    section('Personal projects')
+    for (const project of personalProjects) {
+        write(`${project.title} - ${project.category}`, 12, true)
+        link(project.repository.replace('https://', ''), project.repository)
+        write(project.description)
+        for (const highlight of project.highlights) write(`- ${highlight}`)
+        write(project.tags.join(', '), 9)
         cursor += 3
     }
     section('Technical skills')

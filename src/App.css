@@ -1220,6 +1220,160 @@
     height: 4px;
 }
 
+.network-link {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 17px;
+    color: #285b85;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.7;
+}
+
+.network-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.network-link svg {
+    flex-shrink: 0;
+}
+
+.project-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+.project-tabs {
+    display: flex;
+    gap: 16px;
+    border-bottom: 1px solid var(--line);
+    max-width: 100%;
+}
+
+.project-tabs button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 10px 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: #65748a;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.project-tabs button svg {
+    flex-shrink: 0;
+}
+
+.project-tabs button[aria-selected="true"] {
+    border-bottom-color: var(--blue);
+    color: #244b73;
+}
+
+.project-tile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 22px;
+    border-bottom: 1px solid #e6ebf2;
+    background: #f4f8fc;
+    color: #31547a;
+    font: 11px/1.7 var(--mono);
+}
+
+.project-tile-header>span:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.personal-project .project-tile-header {
+    background: #f0f8f5;
+    color: #2d6655;
+}
+
+.personal-work-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.personal-work-heading h3 {
+    margin-top: 8px;
+    font-size: 24px;
+}
+
+.personal-project {
+    display: flex;
+    flex-direction: column;
+}
+
+.personal-project-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding-bottom: 20px;
+}
+
+.personal-project-category {
+    font: 11px/1.7 var(--mono);
+    color: #53657d;
+}
+
+.personal-project h3 {
+    margin-top: 5px;
+    font-size: 20px;
+    line-height: 1.5;
+}
+
+.personal-project p,
+.personal-project li {
+    font-size: 15px;
+    line-height: 1.85;
+    color: #53657d;
+}
+
+.personal-project p {
+    margin-top: 9px;
+    max-width: 850px;
+}
+
+.personal-project ul {
+    display: grid;
+    gap: 8px;
+    margin: 14px 0 0;
+    padding-left: 19px;
+    max-width: 850px;
+}
+
+.personal-project-source {
+    display: inline-flex;
+    margin-top: 18px;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    align-self: flex-start;
+}
+
+.personal-project-content .tags {
+    margin-top: auto;
+    padding-top: 16px;
+}
+
 .experience-section {
     background: #f9fafc;
     border-block: 1px solid #edf0f4;
@@ -2015,6 +2169,25 @@ dialog[open] {
 .architecture-list li::marker {
     font-family: var(--mono);
     color: #95add0;
+}
+
+.project-decisions {
+    display: grid;
+    gap: 16px;
+    margin: 0;
+}
+
+.project-decisions dt {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.7;
+}
+
+.project-decisions dd {
+    margin: 5px 0 0;
+    color: #5f6f85;
+    font-size: 15px;
+    line-height: 1.85;
 }
 
 .project-dialog .source-note {

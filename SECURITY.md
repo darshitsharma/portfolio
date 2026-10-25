@@ -12,14 +12,14 @@ Build verification compares the six original documents against the SHA-256 value
 
 1. Enable a passkey or two-factor authentication on your GitHub account. Secure your recovery methods and review account sessions, SSH keys, personal access tokens, and authorized applications. Never place tokens or private keys in this project.
 2. In repository **Settings > Pages**, select **GitHub Actions** as the build/deployment source. Enable **Enforce HTTPS**. The workflow is configured for `https://darshitsharma.github.io/portfolio/`.
-3. Protect the publishing branch, currently `master`, with an active branch ruleset: block force pushes and deletion, require pull requests, and require the `build` status check after the workflow has run once. Keep bypass permissions limited and review collaborator access. These protections are available for public repositories on GitHub Free; check your plan if the repository is private.
-4. Restrict the `github-pages` environment to deployments from `master`. Do not leave it open to arbitrary branches or tags. The workflow independently restricts deployments to this branch and does not deploy pull requests.
+3. Protect the publishing branch, currently `main`, with an active branch ruleset: block force pushes and deletion, require pull requests, and require the `build` status check after the workflow has run once. Keep bypass permissions limited and review collaborator access. These protections are available for public repositories on GitHub Free; check your plan if the repository is private.
+4. Restrict the `github-pages` environment to deployments from `main`. Do not leave it open to arbitrary branches or tags. The workflow independently restricts deployments to this branch and does not deploy pull requests.
 5. Enable Dependabot alerts, secret scanning, and push protection where available. Weekly dependency/action update PRs are configured. Review them and rerun checks; do not blindly auto-merge.
 6. Review the certificates before publishing: they contain personal information and signatures. All files in `public/`, and all files in a public repository, are publicly downloadable. Remove or redact anything you do not intend to publish before committing it; the bundled originals have deliberately not been altered.
 
 `CODEOWNERS` requests review from `@darshitsharma`; it does not enforce access control by itself. Requiring Code Owner approval needs branch protection and an eligible reviewer. GitHub does not allow you to approve your own PR, so a solo maintainer should not enable an approval requirement they cannot satisfy. Add a trusted reviewer to CODEOWNERS before requiring approval of your own changes.
 
-If you rename `master` to `main`, update both branch filters/conditions in the workflow and the GitHub protections/environment settings. If you rename the repository or use a custom domain/user site, update `PAGES_BASE_PATH` in the workflow (`/` for a root site).
+The workflow now targets `main`. Any existing GitHub branch rules or environment restrictions for the old branch must be updated separately in GitHub; changing the workflow does not migrate those settings. For future branch renames, update both workflow filters/conditions and GitHub protections/environment settings. If you rename the repository or use a custom domain/user site, update `PAGES_BASE_PATH` in the workflow (`/` for a root site).
 
 ## Deployment Controls
 
