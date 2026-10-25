@@ -55,6 +55,17 @@
     color: #778293;
 }
 
+#root .impact-card h3 {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#root .impact-card .metric-label {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #53637a;
+}
+
 #root .project-filters button {
     color: #53637a;
     font-size: 13px;

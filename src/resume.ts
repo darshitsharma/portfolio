@@ -50,7 +50,7 @@ export function downloadResumePdf() {
     }
     write(profile.name, 26, true, [15, 23, 42])
     write(profile.role, 10)
-    write(`${profile.email}  |  ${profile.phone}`, 9)
+    write(profile.email, 9)
     write('linkedin.com/in/darshit-sharma', 9)
     write(`Toptal network member since ${profile.toptalMemberSince}`, 9)
     link('Toptal profile: darshit-sharma', profile.toptal)

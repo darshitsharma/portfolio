@@ -2,7 +2,6 @@ export const profile = {
     name: 'Darshit Sharma',
     role: 'Data Scientist | Machine Learning Engineer | AI Engineer',
     email: 'darsu2000sharma@gmail.com',
-    phone: '+91-6377597572',
     linkedin: 'https://www.linkedin.com/in/darshit-sharma',
     github: 'https://github.com/darshitsharma',
     toptal: 'https://www.toptal.com/developers/resume/darshit-sharma',
@@ -168,19 +167,6 @@ export const personalProjects: PersonalProject[] = [
         tags: ['FastAPI', 'React Flow', 'LangGraph', 'Ollama', 'ChromaDB'],
         repository: 'https://github.com/darshitsharma/AgentFlow',
         evidence: 'README and backend/app/workflow_engine.py reviewed on 25 Oct 2026. Personal project; no production-scale or commercial outcome claimed.',
-    },
-    {
-        id: 'credscope-ai',
-        title: 'CredScope-AI',
-        category: 'Financial ML prototype',
-        description: 'An MSME financial-health prototype connecting model training, a scoring API, and a dashboard for financial health, credit eligibility, and recommended credit limits.',
-        highlights: [
-            'Uses XGBoost regression and classification pipelines to model financial-health scores, credit eligibility, and recommended credit limits from the supplied synthetic dataset.',
-            'Connects a FastAPI scoring service to a Next.js dashboard for financial indicators and model explanations. Built as an assignment prototype, not a validated lending system.',
-        ],
-        tags: ['XGBoost', 'FastAPI', 'Next.js', 'Scikit-Learn'],
-        repository: 'https://github.com/darshitsharma/CredScope-AI',
-        evidence: 'README and ml_pipeline/train_models.py reviewed on 25 Oct 2026. Synthetic-data assignment; no real-world credit performance or deployment claimed.',
     },
     {
         id: 'amex',

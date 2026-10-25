@@ -29,14 +29,13 @@ describe('portfolio content integrity', () => {
     })
 
     it('keeps evidenced personal projects separate from employer work', () => {
-        expect(personalProjects.map(project => project.id)).toEqual(['agentflow', 'credscope-ai', 'amex'])
+        expect(personalProjects.map(project => project.id)).toEqual(['agentflow', 'amex'])
         for (const project of personalProjects) {
             expect(project.repository).toMatch(/^https:\/\/github\.com\/darshitsharma\//)
             expect(project.highlights).toHaveLength(2)
             expect(project.evidence).toContain('25 Oct 2026')
         }
-        expect(personalProjects[1].evidence).toContain('Synthetic-data')
-        expect(personalProjects[2].highlights.join(' ')).toContain('not classification accuracy')
+        expect(personalProjects[1].highlights.join(' ')).toContain('not classification accuracy')
         expect(profile.toptal).toBe('https://www.toptal.com/developers/resume/darshit-sharma')
         expect(profile.toptalMemberSince).toBe('22 Oct 2026')
     })

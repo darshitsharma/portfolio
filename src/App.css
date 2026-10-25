@@ -1252,8 +1252,7 @@
 
 .project-tabs {
     display: flex;
-    gap: 16px;
-    border-bottom: 1px solid var(--line);
+    gap: 8px;
     max-width: 100%;
 }
 
@@ -1263,10 +1262,11 @@
     justify-content: center;
     gap: 7px;
     min-height: 44px;
-    padding: 10px 0;
-    border-bottom: 2px solid transparent;
-    background: transparent;
-    color: #65748a;
+    padding: 10px 12px;
+    border: 1px solid #abc2df;
+    border-radius: 6px;
+    background: #eaf2fd;
+    color: #244b73;
     font-size: 14px;
     font-weight: 600;
 }
@@ -1276,8 +1276,39 @@
 }
 
 .project-tabs button[aria-selected="true"] {
-    border-bottom-color: var(--blue);
-    color: #244b73;
+    border-color: #244b73;
+    background: #244b73;
+    color: #fff;
+}
+
+.project-tabs #projects-personal-tab {
+    border-color: #a5cdbd;
+    background: #e8f5ee;
+    color: #225d47;
+}
+
+.project-tabs #projects-personal-tab[aria-selected="true"] {
+    border-color: #225d47;
+    background: #225d47;
+    color: #fff;
+}
+
+.project-tabs button:hover {
+    box-shadow: inset 0 0 0 1px currentColor;
+}
+
+@media (max-width: 370px) {
+    .project-tabs {
+        width: 100%;
+        gap: 6px;
+    }
+
+    .project-tabs button {
+        flex: 1;
+        min-width: 0;
+        padding-inline: 6px;
+        font-size: 13px;
+    }
 }
 
 .project-tile-header {

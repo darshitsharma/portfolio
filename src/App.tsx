@@ -27,7 +27,6 @@ import {
     Menu,
     MessageCircle,
     Pause,
-    Phone,
     Play,
     Workflow,
     X,
@@ -732,33 +731,25 @@ function App() {
                             <div className="metric-icon">
                                 <Cpu size={19} />
                             </div>
-                            <div className="impact-value">
-                                &lt;
-                                <Counter value={50} />
-                                <span className="metric-unit">ms</span>
-                            </div>
-                            <h3>API response time</h3>
+                            <div className="impact-value">R&amp;D</div>
+                            <h3>Patent-pending digital AI twin</h3>
                             <p>
-                                Built for scale. Up to 1,100 parallel
-                                <br />
-                                analytics requests, without timeouts.
+                                Applied research, predictive modeling, and scalable
+                                digital-twin deployment.
                             </p>
-                            <span className="metric-label">PERFORMANCE IS A FEATURE</span>
+                            <span className="metric-label">RESEARCH INTO REAL-WORLD IMPACT</span>
                         </Reveal>
                         <Reveal className="impact-card" delay={0.22}>
                             <div className="metric-icon">
-                                <GraduationCap size={19} />
+                                <Workflow size={19} />
                             </div>
-                            <div className="impact-value">
-                                <Counter value={1000} suffix="+" />
-                            </div>
-                            <h3>People upskilled in GenAI</h3>
+                            <div className="impact-value">GenAI</div>
+                            <h3>Production-grade systems</h3>
                             <p>
-                                Learning paths from entry-level to
-                                <br />
-                                executives at Mahindra AI Academy.
+                                Low-latency RAG with &gt;96.8% Top-K retrieval
+                                accuracy.
                             </p>
-                            <span className="metric-label">KNOWLEDGE THAT MULTIPLIES</span>
+                            <span className="metric-label">LOW LATENCY. HIGH ACCURACY.</span>
                         </Reveal>
                     </div>
                 </section>
@@ -883,7 +874,7 @@ function App() {
                                         <h3 id="personal-projects-title">Personal projects</h3>
                                     </div>
                                     <a className="text-link" href={profile.github} target="_blank" rel="noopener noreferrer">
-                                        GitHub profile <ArrowUpRight size={16} />
+                                        <img src={assetPath('logos/github.svg')} width={16} height={16} alt="" /> GitHub profile <ArrowUpRight size={16} />
                                     </a>
                                 </div>
                             </Reveal>
@@ -893,7 +884,7 @@ function App() {
                                         <article className="project-card personal-project" aria-labelledby={`${project.id}-title`}>
                                             <div className="project-tile-header">
                                                 <span><Braces size={14} aria-hidden="true" /> Personal project</span>
-                                                {project.id === 'agentflow' ? <Workflow size={18} aria-hidden="true" /> : project.id === 'credscope-ai' ? <Database size={18} aria-hidden="true" /> : <Cpu size={18} aria-hidden="true" />}
+                                                {project.id === 'agentflow' ? <Workflow size={18} aria-hidden="true" /> : <Cpu size={18} aria-hidden="true" />}
                                             </div>
                                             <div className="project-content personal-project-content">
                                                 <span className="personal-project-category">{project.category}</span>
@@ -1180,20 +1171,10 @@ function App() {
                                             <ExternalLink size={19} />
                                         </span>
                                         <span>
-                                            <small>LET’S CONNECT</small>
+                                            <small>LET’S CONNECT ON LINKEDIN</small>
                                             <strong>darshit-sharma</strong>
                                         </span>
                                         <ExternalLink size={16} />
-                                    </a>
-                                    <a href={`tel:${profile.phone}`}>
-                                        <span className="contact-link-icon">
-                                            <Phone size={19} />
-                                        </span>
-                                        <span>
-                                            <small>GIVE ME A CALL</small>
-                                            <strong>{profile.phone}</strong>
-                                        </span>
-                                        <ArrowUpRight size={18} />
                                     </a>
                                     <a href={profile.toptal} target="_blank" rel="noopener noreferrer">
                                         <span className="contact-link-icon"><BadgeCheck size={19} /></span>
@@ -1204,7 +1185,7 @@ function App() {
                                         <ExternalLink size={16} />
                                     </a>
                                     <a href={profile.github} target="_blank" rel="noopener noreferrer">
-                                        <span className="contact-link-icon"><Braces size={19} /></span>
+                                        <span className="contact-link-icon"><img src={assetPath('logos/github.svg')} width={19} height={19} alt="" /></span>
                                         <span>
                                             <small>CODE & PERSONAL PROJECTS</small>
                                             <strong>github.com/darshitsharma</strong>

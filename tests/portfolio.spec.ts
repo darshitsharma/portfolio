@@ -22,6 +22,27 @@ test('renders the portfolio with no horizontal overflow', async ({ page }) => {
     await expect(page.locator('.impact-card').first()).toContainText('172+')
 })
 
+test('highlights applied R&D and production GenAI with readable impact text', async ({ page }) => {
+    const cards = page.locator('.impact-card')
+    await expect(cards).toHaveCount(4)
+    await expect(cards.nth(2)).toContainText('Patent-pending digital AI twin')
+    await expect(cards.nth(2).locator('.impact-value')).toHaveText('R&D')
+    await expect(cards.nth(3)).toContainText('Production-grade systems')
+    await expect(cards.nth(3)).toContainText('>96.8% Top-K retrieval accuracy')
+    await expect(page.getByRole('heading', { name: 'API response time', exact: true })).toHaveCount(0)
+    await expect(page.getByRole('heading', { name: 'People upskilled in GenAI', exact: true })).toHaveCount(0)
+    for (const width of [320, 390, 768, 1440]) {
+        await page.setViewportSize({ width, height: 900 })
+        await page.evaluate(() => new Promise(requestAnimationFrame))
+        await page.evaluate(() => document.fonts.ready)
+        for (const [selector, minimum] of [['h3', 14], ['p', 15], ['.metric-label', 12]] as const) {
+            const sizes = await cards.locator(selector).evaluateAll(elements => elements.map(element => parseFloat(getComputedStyle(element).fontSize)))
+            expect(sizes.every(size => size >= minimum)).toBe(true)
+        }
+        await expect.poll(() => cards.locator('h3,p,.metric-label,.impact-value').evaluateAll(elements => elements.filter(element => element.scrollWidth > element.clientWidth + 1).map(element => element.textContent))).toEqual([])
+    }
+})
+
 test('filters projects and opens each case study', async ({ page }) => {
     await page
         .getByRole('button', { name: 'GenAI & Agents', exact: true })
@@ -54,16 +75,21 @@ test('shows evidenced personal projects separately from professional case studie
     const companyTab = page.getByRole('tab', { name: 'Company projects', exact: true })
     const personalTab = page.getByRole('tab', { name: 'Personal projects', exact: true })
     await expect(companyTab).toHaveAttribute('aria-selected', 'true')
+    await expect(companyTab).toHaveCSS('background-color', 'rgb(36, 75, 115)')
     await expect(page.locator('.project-tile-header').filter({ hasText: 'Company project' })).toHaveCount(4)
     await expect(page.locator('.personal-project')).toHaveCount(0)
     await page.getByRole('button', { name: 'GenAI & Agents', exact: true }).click()
     await personalTab.click()
     await expect(personalTab).toHaveAttribute('aria-selected', 'true')
+    await expect(personalTab).toHaveCSS('background-color', 'rgb(34, 93, 71)')
+    const githubMark = page.getByRole('link', { name: 'GitHub profile', exact: true }).locator('img')
+    await expect(githubMark).toHaveAttribute('src', /logos\/github\.svg$/)
+    await expect.poll(() => githubMark.evaluate(image => (image as HTMLImageElement).naturalWidth)).toBeGreaterThan(0)
     await expect(page.getByRole('tabpanel', { name: 'Company projects', exact: true })).toBeHidden()
     await expect(page.getByRole('heading', { name: 'Personal projects', exact: true })).toBeVisible()
-    await expect(page.locator('.personal-project')).toHaveCount(3)
-    await expect(page.locator('.personal-project.project-card')).toHaveCount(3)
-    await expect(page.locator('.project-tile-header').filter({ hasText: 'Personal project' })).toHaveCount(3)
+    await expect(page.locator('.personal-project')).toHaveCount(2)
+    await expect(page.locator('.personal-project.project-card')).toHaveCount(2)
+    await expect(page.locator('.project-tile-header').filter({ hasText: 'Personal project' })).toHaveCount(2)
     for (const project of personalProjects) {
         const entry = page.getByRole('article', { name: project.title, exact: true })
         await expect(entry).toContainText(project.description)
@@ -73,7 +99,7 @@ test('shows evidenced personal projects separately from professional case studie
         await expect(source).toHaveAttribute('target', '_blank')
         await expect(source).toHaveAttribute('rel', 'noopener noreferrer')
     }
-    await expect(page.locator('#credscope-ai-title').locator('..')).toContainText('synthetic dataset')
+    await expect(page.getByRole('article', { name: 'CredScope-AI', exact: true })).toHaveCount(0)
     await expect(page.locator('#amex-title').locator('..')).toContainText('not classification accuracy')
     await personalTab.focus()
     await page.keyboard.press('ArrowLeft')
@@ -83,7 +109,7 @@ test('shows evidenced personal projects separately from professional case studie
     await expect(page.locator('.personal-project')).toHaveCount(0)
     await page.keyboard.press('End')
     await expect(personalTab).toBeFocused()
-    await expect(page.locator('.personal-project')).toHaveCount(3)
+    await expect(page.locator('.personal-project')).toHaveCount(2)
     await page.keyboard.press('Home')
     await expect(companyTab).toBeFocused()
 })
@@ -233,6 +259,8 @@ test('downloads a valid generated resume PDF', async ({ page }) => {
     expect(buffer.toString()).toContain('JECRC')
     expect(buffer.toString()).toContain('Toptal network member since 22 Oct 2026')
     expect(buffer.toString()).toContain(profile.toptal)
+    expect(buffer.toString()).not.toContain('CredScope-AI')
+    expect(buffer.toString()).not.toContain('6377597572')
     for (const project of personalProjects) {
         expect(buffer.toString()).toContain(project.title)
         expect(buffer.toString()).toContain(project.repository)
@@ -249,10 +277,10 @@ test('preserves contact destinations', async ({ page }) => {
         'href',
         'https://www.linkedin.com/in/darshit-sharma',
     )
-    await expect(page.locator('.contact-links a').nth(2)).toHaveAttribute(
-        'href',
-        'tel:+91-6377597572',
-    )
+    await expect(page.locator('.contact-links a').nth(1)).toContainText('LET’S CONNECT ON LINKEDIN')
+    await expect(page.locator('a[href^="tel:"]')).toHaveCount(0)
+    await expect(page.getByText('GIVE ME A CALL', { exact: true })).toHaveCount(0)
+    await expect(page.locator('body')).not.toContainText('6377597572')
 })
 
 test('production policy blocks inline scripts without breaking portfolio features', async ({ page }) => {
